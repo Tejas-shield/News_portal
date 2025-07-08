@@ -1,0 +1,29 @@
+<h1>🗞️ Top News</h1>
+
+<!-- 🔍 Search News -->
+<form method="get">
+  <input name="q" placeholder="Search news...">
+  <button type="submit">Search</button>
+</form>
+
+<!-- 📬 Telegram Send News Button -->
+<form method="get" action="{% url 'send_telegram_news' %}">
+  <button type="submit" style="padding:10px; background:#0088cc; color:white; border:none; border-radius:5px;">
+    📬 Send Telegram News
+  </button>
+</form>
+
+<!-- 📰 Display News Articles -->
+<ul>
+  {% for article in news %}
+    {% if article.url %}
+      <h3><a href="{% url 'detail' %}?url={{ article.url|urlencode }}">{{ article.title }}</a></h3>
+      <p>{{ article.description }}</p>
+    {% else %}
+      <h3>{{ article.title }} (No link available)</h3>
+    {% endif %}
+  {% endfor %}
+</ul>
+
+<!-- 🔗 Link to Subscribe Page -->
+<a href="{% url 'subscribe' %}">Subscribe for Telegram News</a>

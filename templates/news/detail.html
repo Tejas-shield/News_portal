@@ -1,0 +1,30 @@
+<h2>Article: {{ url }}</h2>
+<a href="{{ url }}" target="_blank">Read Full</a>
+
+<!-- ✅ Summarize Form (fixed) -->
+<form method="get">
+  <input type="hidden" name="url" value="{{ url }}">
+  <button type="submit" name="summarize" value="1">Summarize with AI</button>
+</form>
+
+<!-- ✅ Summary Output -->
+{% if summary %}
+  <h3>AI Summary</h3>
+  <p>{{ summary }}</p>
+{% endif %}
+
+<!-- ✅ Comment Section -->
+<h3>Comments</h3>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button>Post</button>
+</form>
+
+<ul>
+  {% for c in comments %}
+    <li><b>{{ c.name }}</b>: {{ c.comment }}</li>
+  {% empty %}
+    <li>No comments yet.</li>
+  {% endfor %}
+</ul>

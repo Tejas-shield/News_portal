@@ -1,0 +1,15 @@
+<h2>📲 Subscribe for Telegram News</h2>
+
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Subscribe</button>
+</form>
+
+<p style="margin-top: 20px;">
+  <strong>How to get your Telegram Chat ID:</strong><br>
+  1. Start a conversation with our bot on Telegram<br>
+  2. Send any message (like "Hi")<br>
+  3. You'll receive your Chat ID (or the admin can look it up)<br>
+  4. Paste that Chat ID here and subscribe
+</p>
