@@ -1,5 +1,5 @@
 from django_cron import CronJobBase, Schedule
-from .views import send_whatsapp_news
+from .views import send_telegram_news
 
 class DailyNewsCron(CronJobBase):
     RUN_AT_TIMES = ['08:00']
@@ -7,4 +7,4 @@ class DailyNewsCron(CronJobBase):
     code = 'news.daily_news_cron'
 
     def do(self):
-        send_whatsapp_news()
+        send_telegram_news()
