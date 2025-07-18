@@ -1,30 +1,126 @@
-<h2>Article: {{ url }}</h2>
-<a href="{{ url }}" target="_blank">Read Full</a>
+{% extends 'news/base.html' %}
 
-<!-- ✅ Summarize Form (fixed) -->
-<form method="get">
-  <input type="hidden" name="url" value="{{ url }}">
-  <button type="submit" name="summarize" value="1">Summarize with AI</button>
-</form>
+{% block title %}Article Details - News Portal{% endblock %}
 
-<!-- ✅ Summary Output -->
-{% if summary %}
-  <h3>AI Summary</h3>
-  <p>{{ summary }}</p>
-{% endif %}
+{% block content %}
+<div class="container" style="padding: 2rem 0;">
+    <div style="max-width: 800px; margin: 0 auto;">
+        <!-- Back Button -->
+        <div style="margin-bottom: 2rem;">
+            <a href="{% url 'home' %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to News
+            </a>
+        </div>
 
-<!-- ✅ Comment Section -->
-<h3>Comments</h3>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button>Post</button>
-</form>
+        <!-- Article Header -->
+        <div class="card slide-up" style="background: var(--white); padding: 2rem; border-radius: 20px; box-shadow: var(--shadow); margin-bottom: 2rem;">
+            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                <i class="fas fa-newspaper" style="font-size: 2rem; color: var(--primary-color);"></i>
+                <h1 style="font-size: 1.8rem; font-weight: 600; color: var(--text-dark); flex: 1;">
+                    Article Details
+                </h1>
+            </div>
+            
+            <div style="background: var(--light-bg); padding: 1rem; border-radius: 10px; margin-bottom: 1.5rem; word-break: break-all;">
+                <strong>URL:</strong> {{ url }}
+            </div>
+            
+            <a href="{{ url }}" target="_blank" class="btn btn-primary" style="margin-bottom: 1rem;">
+                <i class="fas fa-external-link-alt"></i> Read Full Article
+            </a>
 
-<ul>
-  {% for c in comments %}
-    <li><b>{{ c.name }}</b>: {{ c.comment }}</li>
-  {% empty %}
-    <li>No comments yet.</li>
-  {% endfor %}
-</ul>
+            <!-- Summarize Form -->
+            <form method="get" style="display: inline-block; margin-left: 1rem;">
+                <input type="hidden" name="url" value="{{ url }}">
+                <button type="submit" name="summarize" value="1" class="btn btn-secondary">
+                    <i class="fas fa-robot"></i> Summarize with AI
+                </button>
+            </form>
+        </div>
+
+        <!-- AI Summary -->
+        {% if summary %}
+            <div class="card fade-in" style="background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%); padding: 2rem; border-radius: 20px; margin-bottom: 2rem; color: var(--white);">
+                <h3 style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; font-size: 1.3rem;">
+                    <i class="fas fa-brain"></i> AI Summary
+                </h3>
+                <div style="background: rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 15px; line-height: 1.6;">
+                    {{ summary }}
+                </div>
+            </div>
+        {% endif %}
+
+        <!-- Comments Section -->
+        <div class="card slide-up" style="background: var(--white); padding: 2rem; border-radius: 20px; box-shadow: var(--shadow);">
+            <h3 style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 2rem; color: var(--text-dark); font-size: 1.3rem;">
+                <i class="fas fa-comments"></i> Comments
+            </h3>
+
+            <!-- Comment Form -->
+            <form method="post" style="background: var(--light-bg); padding: 1.5rem; border-radius: 15px; margin-bottom: 2rem;">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label class="form-label">{{ form.name.label }}</label>
+                    {{ form.name }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">{{ form.comment.label }}</label>
+                    <textarea name="comment" class="form-control" rows="4" placeholder="Share your thoughts about this article..." required>{{ form.comment.value|default_if_none:"" }}</textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-paper-plane"></i> Post Comment
+                </button>
+            </form>
+
+            <!-- Comments List -->
+            <div class="comments-list">
+                {% for c in comments %}
+                    <div style="background: var(--white); border: 2px solid var(--light-bg); padding: 1.5rem; border-radius: 15px; margin-bottom: 1rem; transition: all 0.3s ease;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+                            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--white); font-weight: 600;">
+                                {{ c.name|first|upper }}
+                            </div>
+                            <div>
+                                <strong style="color: var(--text-dark);">{{ c.name }}</strong>
+                                <div style="font-size: 0.8rem; color: var(--text-light);">
+                                    <i class="fas fa-clock"></i> {{ c.timestamp|date:"M d, Y - H:i" }}
+                                </div>
+                            </div>
+                        </div>
+                        <p style="color: var(--text-dark); line-height: 1.5; margin-left: 50px;">
+                            {{ c.comment }}
+                        </p>
+                    </div>
+                {% empty %}
+                    <div style="text-align: center; padding: 3rem; color: var(--text-light);">
+                        <i class="fas fa-comment-slash" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                        <p>No comments yet. Be the first to share your thoughts!</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .comments-list > div:hover {
+        border-color: var(--primary-color);
+        transform: translateX(5px);
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            padding: 1rem 0;
+        }
+        
+        .card {
+            padding: 1.5rem !important;
+        }
+        
+        .comments-list p {
+            margin-left: 0 !important;
+            margin-top: 0.5rem;
+        }
+    }
+</style>
+{% endblock %}

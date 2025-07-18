@@ -1,15 +1,114 @@
-<h2>📲 Subscribe for Telegram News</h2>
+{% extends 'news/base.html' %}
 
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Subscribe</button>
-</form>
+{% block title %}Subscribe - News Portal{% endblock %}
 
-<p style="margin-top: 20px;">
-  <strong>How to get your Telegram Chat ID:</strong><br>
-  1. Start a conversation with our bot on Telegram<br>
-  2. Send any message (like "Hi")<br>
-  3. You'll receive your Chat ID (or the admin can look it up)<br>
-  4. Paste that Chat ID here and subscribe
-</p>
+{% block content %}
+<div class="container" style="padding: 2rem 0;">
+    <div style="max-width: 600px; margin: 0 auto;">
+        <!-- Header -->
+        <div class="slide-up" style="text-align: center; margin-bottom: 3rem;">
+            <div style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
+                <i class="fab fa-telegram" style="font-size: 2.5rem; color: var(--white);"></i>
+            </div>
+            <h1 style="font-size: 2.5rem; font-weight: 700; color: var(--text-dark); margin-bottom: 1rem;">
+                📲 Subscribe for News
+            </h1>
+            <p style="font-size: 1.1rem; color: var(--text-light); line-height: 1.6;">
+                Get personalized news updates delivered directly to your Telegram
+            </p>
+        </div>
+
+        <!-- Subscription Form -->
+        <div class="card fade-in" style="background: var(--white); padding: 2.5rem; border-radius: 20px; box-shadow: var(--shadow); margin-bottom: 2rem;">
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-user"></i> Your Name
+                    </label>
+                    {{ form.name }}
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fab fa-telegram"></i> Telegram Chat ID
+                    </label>
+                    {{ form.chat_id }}
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.1rem;">
+                    <i class="fas fa-bell"></i> Subscribe Now
+                </button>
+            </form>
+        </div>
+
+        <!-- Instructions -->
+        <div class="card slide-up" style="background: linear-gradient(135deg, var(--accent-color) 0%, var(--light-bg) 100%); padding: 2rem; border-radius: 20px; box-shadow: var(--shadow);">
+            <h3 style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem; color: var(--text-dark);">
+                <i class="fas fa-info-circle"></i> How to get your Telegram Chat ID
+            </h3>
+            
+            <div style="space-y: 1rem;">
+                <div style="display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1rem;">
+                    <div style="width: 30px; height: 30px; background: var(--secondary-color); color: var(--white); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; flex-shrink: 0;">
+                        1
+                    </div>
+                    <p style="color: var(--text-dark); line-height: 1.5;">
+                        Start a conversation with our news bot on Telegram
+                    </p>
+                </div>
+                
+                <div style="display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1rem;">
+                    <div style="width: 30px; height: 30px; background: var(--secondary-color); color: var(--white); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; flex-shrink: 0;">
+                        2
+                    </div>
+                    <p style="color: var(--text-dark); line-height: 1.5;">
+                        Send any message (like "Hi" or "Hello")
+                    </p>
+                </div>
+                
+                <div style="display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1rem;">
+                    <div style="width: 30px; height: 30px; background: var(--secondary-color); color: var(--white); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; flex-shrink: 0;">
+                        3
+                    </div>
+                    <p style="color: var(--text-dark); line-height: 1.5;">
+                        You'll receive your Chat ID from the bot
+                    </p>
+                </div>
+                
+                <div style="display: flex; align-items: flex-start; gap: 1rem;">
+                    <div style="width: 30px; height: 30px; background: var(--secondary-color); color: var(--white); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; flex-shrink: 0;">
+                        4
+                    </div>
+                    <p style="color: var(--text-dark); line-height: 1.5;">
+                        Copy and paste that Chat ID in the form above
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Back to Home -->
+        <div style="text-align: center; margin-top: 2rem;">
+            <a href="{% url 'home' %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to News
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    @media (max-width: 768px) {
+        .container {
+            padding: 1rem 0;
+        }
+        
+        .slide-up h1 {
+            font-size: 2rem !important;
+        }
+        
+        .card {
+            padding: 1.5rem !important;
+        }
+    }
+</style>
+{% endblock %}
