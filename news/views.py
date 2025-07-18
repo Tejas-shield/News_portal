@@ -95,7 +95,8 @@ def send_telegram_news():
     subs = Subscription.objects.all()
 
     for sub in subs:
-        url = f"https://newsapi.org/v2/top-headlines?country=in&category={sub.category}&apiKey={api_key}&pageSize=3"
+        url = f"https://newsapi.org/v2/top-headlines?country=us&apiKey={api_key}&pageSize=3"
+
         response = requests.get(url).json()
 
         if not response.get("articles"):
